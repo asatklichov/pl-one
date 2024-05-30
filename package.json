@@ -70,7 +70,8 @@
                 ],
                 "extensions": [
                     ".pl1",
-                    ".PLI"
+                    ".PLI",
+                    ".pli"
                 ],
                 "configuration": "./language-configuration.json"
             }
