@@ -1,26 +1,22 @@
-import { addMonacoStyles, defineUserServices, MonacoEditorLanguageClientWrapper } from './bundle/index.js';
-import { configureWorker } from './setup.js';
+import { MonacoEditorLanguageClientWrapper, UserConfig } from 'monaco-editor-wrapper';
+import { configureWorker, defineUserServices } from './setupCommon.js';
 
-addMonacoStyles('monaco-editor-styles');
-
-export const setupConfigExtended = () => {
+export const setupConfigExtended = (): UserConfig => {
     const extensionFilesOrContents = new Map();
-    const languageConfigUrl = new URL('../language-configuration.json', window.location.href);
-    const textmateConfigUrl = new URL('../syntaxes/pl-one.tmLanguage.json', window.location.href);
-    extensionFilesOrContents.set('/language-configuration.json', languageConfigUrl);
-    extensionFilesOrContents.set('/pl-one-grammar.json', textmateConfigUrl);
+    extensionFilesOrContents.set('/language-configuration.json', new URL('../language-configuration.json', import.meta.url));
+    extensionFilesOrContents.set('/pl-1-grammar.json', new URL('../syntaxes/pl-1.tmLanguage.json', import.meta.url));
 
     return {
         wrapperConfig: {
             serviceConfig: defineUserServices(),
             editorAppConfig: {
                 $type: 'extended',
-                languageId: 'pl-one',
-                code: `// PL One is running in the web!`,
+                languageId: 'pl-1',
+                code: `// pl1 is running in the web!`,
                 useDiffEditor: false,
                 extensions: [{
                     config: {
-                        name: 'pl-one-web',
+                        name: 'pl-1-web',
                         publisher: 'generator-langium',
                         version: '1.0.0',
                         engines: {
@@ -28,16 +24,16 @@ export const setupConfigExtended = () => {
                         },
                         contributes: {
                             languages: [{
-                                id: 'pl-one',
+                                id: 'pl-1',
                                 extensions: [
-                                    '.pl-one'
+                                    '.pl-1'
                                 ],
                                 configuration: './language-configuration.json'
                             }],
                             grammars: [{
-                                language: 'pl-one',
-                                scopeName: 'source.pl-one',
-                                path: './pl-one-grammar.json'
+                                language: 'pl-1',
+                                scopeName: 'source.pl-1',
+                                path: './pl-1-grammar.json'
                             }]
                         }
                     },
@@ -55,7 +51,7 @@ export const setupConfigExtended = () => {
     };
 };
 
-export const executeExtended = async (htmlElement) => {
+export const executeExtended = async (htmlElement: HTMLElement) => {
     const userConfig = setupConfigExtended();
     const wrapper = new MonacoEditorLanguageClientWrapper();
     await wrapper.initAndStart(userConfig, htmlElement);

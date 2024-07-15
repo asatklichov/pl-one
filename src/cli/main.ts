@@ -1,8 +1,8 @@
 import type { Model } from '../language/generated/ast.js';
 import chalk from 'chalk';
 import { Command } from 'commander';
-import { PlOneLanguageMetaData } from '../language/generated/module.js';
-import { createPlOneServices } from '../language/pl-one-module.js';
+import { Pl1LanguageMetaData } from '../language/generated/module.js';
+import { createPl1Services } from '../language/pl-1-module.js';
 import { extractAstNode } from './cli-util.js';
 import { generateJavaScript } from './generator.js';
 import { NodeFileSystem } from 'langium/node';
@@ -15,7 +15,7 @@ const packagePath = path.resolve(__dirname, '..', '..', 'package.json');
 const packageContent = await fs.readFile(packagePath, 'utf-8');
 
 export const generateAction = async (fileName: string, opts: GenerateOptions): Promise<void> => {
-    const services = createPlOneServices(NodeFileSystem).PlOne;
+    const services = createPl1Services(NodeFileSystem).Pl1;
     const model = await extractAstNode<Model>(fileName, services);
     const generatedFilePath = generateJavaScript(model, fileName, opts.destination);
     console.log(chalk.green(`JavaScript code generated successfully: ${generatedFilePath}`));
@@ -30,7 +30,7 @@ export default function(): void {
 
     program.version(JSON.parse(packageContent).version);
 
-    const fileExtensions = PlOneLanguageMetaData.fileExtensions.join(', ');
+    const fileExtensions = Pl1LanguageMetaData.fileExtensions.join(', ');
     program
         .command('generate')
         .argument('<file>', `source file (possible file extensions: ${fileExtensions})`)

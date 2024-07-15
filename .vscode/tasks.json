@@ -4,14 +4,14 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build pl-one",
+            "label": "Build pl-1",
             "command": "npm run langium:generate && npm run build",
             "type": "shell",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "detail": "Langium: Generate grammar and build the pl-one language",
+            "detail": "Langium: Generate grammar and build the pl-1 language",
             "icon": {
                 "color": "terminal.ansiGreen",
                 "id": "server-process"

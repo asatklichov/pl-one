@@ -3,16 +3,16 @@ import { EmptyFileSystem, type LangiumDocument } from "langium";
 import { expandToString as s } from "langium/generate";
 import { parseHelper } from "langium/test";
 import type { Diagnostic } from "vscode-languageserver-types";
-import { createPlOneServices } from "../../src/language/pl-one-module.js";
+import { createPl1Services } from "../../src/language/pl-1-module.js";
 import { Model, isModel } from "../../src/language/generated/ast.js";
 
-let services: ReturnType<typeof createPlOneServices>;
+let services: ReturnType<typeof createPl1Services>;
 let parse:    ReturnType<typeof parseHelper<Model>>;
 let document: LangiumDocument<Model> | undefined;
 
 beforeAll(async () => {
-    services = createPlOneServices(EmptyFileSystem);
-    const doParse = parseHelper<Model>(services.PlOne);
+    services = createPl1Services(EmptyFileSystem);
+    const doParse = parseHelper<Model>(services.Pl1);
     parse = (input: string) => doParse(input, { validation: true });
 
     // activate the following if your linking test requires elements from a built-in library, for example

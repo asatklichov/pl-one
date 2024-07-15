@@ -1,14 +1,14 @@
 import { type Module, inject } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
-import { PlOneGeneratedModule, PlOneGeneratedSharedModule } from './generated/module.js';
-import { PlOneValidator, registerValidationChecks } from './pl-one-validator.js';
+import { Pl1GeneratedModule, Pl1GeneratedSharedModule } from './generated/module.js';
+import { Pl1Validator, registerValidationChecks } from './pl-1-validator.js';
 
 /**
  * Declaration of custom services - add your own service classes here.
  */
-export type PlOneAddedServices = {
+export type Pl1AddedServices = {
     validation: {
-        PlOneValidator: PlOneValidator
+        Pl1Validator: Pl1Validator
     }
 }
 
@@ -16,16 +16,16 @@ export type PlOneAddedServices = {
  * Union of Langium default services and your custom services - use this as constructor parameter
  * of custom service classes.
  */
-export type PlOneServices = LangiumServices & PlOneAddedServices
+export type Pl1Services = LangiumServices & Pl1AddedServices
 
 /**
  * Dependency injection module that overrides Langium default services and contributes the
  * declared custom services. The Langium defaults can be partially specified to override only
  * selected services, while the custom services must be fully specified.
  */
-export const PlOneModule: Module<PlOneServices, PartialLangiumServices & PlOneAddedServices> = {
+export const Pl1Module: Module<Pl1Services, PartialLangiumServices & Pl1AddedServices> = {
     validation: {
-        PlOneValidator: () => new PlOneValidator()
+        Pl1Validator: () => new Pl1Validator()
     }
 };
 
@@ -44,20 +44,25 @@ export const PlOneModule: Module<PlOneServices, PartialLangiumServices & PlOneAd
  * @param context Optional module context with the LSP connection
  * @returns An object wrapping the shared services and the language-specific services
  */
-export function createPlOneServices(context: DefaultSharedModuleContext): {
+export function createPl1Services(context: DefaultSharedModuleContext): {
     shared: LangiumSharedServices,
-    PlOne: PlOneServices
+    Pl1: Pl1Services
 } {
     const shared = inject(
         createDefaultSharedModule(context),
-        PlOneGeneratedSharedModule
+        Pl1GeneratedSharedModule
     );
-    const PlOne = inject(
+    const Pl1 = inject(
         createDefaultModule({ shared }),
-        PlOneGeneratedModule,
-        PlOneModule
+        Pl1GeneratedModule,
+        Pl1Module
     );
-    shared.ServiceRegistry.register(PlOne);
-    registerValidationChecks(PlOne);
-    return { shared, PlOne };
+    shared.ServiceRegistry.register(Pl1);
+    registerValidationChecks(Pl1);
+    if (!context.connection) {
+        // We don't run inside a language server
+        // Therefore, initialize the configuration provider instantly
+        shared.workspace.ConfigurationProvider.initialized({});
+    }
+    return { shared, Pl1 };
 }

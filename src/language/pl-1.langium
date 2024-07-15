@@ -1,4 +1,4 @@
-grammar PlOne
+grammar Pl1
 
 import "./terminals";
 entry Model:

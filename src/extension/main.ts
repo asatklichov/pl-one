@@ -34,13 +34,13 @@ function startLanguageClient(context: vscode.ExtensionContext): LanguageClient {
 
     // Options to control the language client
     const clientOptions: LanguageClientOptions = {
-        documentSelector: [{ scheme: 'file', language: 'pl-one' }]
+        documentSelector: [{ scheme: 'file', language: 'pl-1' }]
     };
 
     // Create the language client and start the client.
     const client = new LanguageClient(
-        'pl-one',
-        'PL One',
+        'pl-1',
+        'pl1',
         serverOptions,
         clientOptions
     );

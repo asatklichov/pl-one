@@ -1,17 +1,15 @@
-import { addMonacoStyles, defineUserServices, MonacoEditorLanguageClientWrapper } from './bundle/index.js';
-import monarchSyntax from "../syntaxes/pl-one.monarch.js";
-import { configureWorker } from './setup.js';
+import { MonacoEditorLanguageClientWrapper, UserConfig } from 'monaco-editor-wrapper';
+import { configureWorker, defineUserServices } from './setupCommon.js';
+import monarchSyntax from "./syntaxes/pl-1.monarch.js";
 
-addMonacoStyles('monaco-editor-styles');
-
-export const setupConfigClassic = () => {
+export const setupConfigClassic = (): UserConfig => {
     return {
         wrapperConfig: {
             serviceConfig: defineUserServices(),
             editorAppConfig: {
                 $type: 'classic',
-                languageId: 'pl-one',
-                code: `// PL One is running in the web!`,
+                languageId: 'pl-1',
+                code: `// pl1 is running in the web!`,
                 useDiffEditor: false,
                 languageExtensionConfig: { id: 'langium' },
                 languageDef: monarchSyntax,
@@ -25,7 +23,7 @@ export const setupConfigClassic = () => {
     };
 };
 
-export const executeClassic = async (htmlElement) => {
+export const executeClassic = async (htmlElement: HTMLElement) => {
     const userConfig = setupConfigClassic();
     const wrapper = new MonacoEditorLanguageClientWrapper();
     await wrapper.initAndStart(userConfig, htmlElement);
