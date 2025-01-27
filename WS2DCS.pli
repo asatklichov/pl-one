@@ -1,8 +1,4 @@
- WS2DCS: PROC (DFHCOMMAREA) REORDER OPTIONS(MAIN);
-
- * This is the Display Customer Web Service                           *
- * It is a wrapper of INQCUST BANK program                            *
- *********************************************************************/
+ WS2DCS: PROC (DFHCOMMAREA) REORDER OPTIONS(MAIN); 
  DCL 1 WS_CICS_WORK_ARE,
         3 WS_CICS_RESP BINARY FIXED(15) INIT(0),
         3 WS_CICS_RESP2 BINARY FIXED(15) INIT(0);
